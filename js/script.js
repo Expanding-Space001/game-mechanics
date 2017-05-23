@@ -6,7 +6,7 @@ function preload(){
   game.load.image('diamond', 'assets/diamond.png');
   game.load.image('firstaid', 'assets/firstaid.png');
   game.load.image('bullet', 'assets/star.png');
-  game.load.image('enemy','assets/enemy.png');
+  game.load.image('enemy','assets/firstaid.png');
 }
 
 var cursors;
@@ -26,19 +26,23 @@ var bullets3;
 var bulletTime3 = 1000;
 
 function create(){
+  //physics
+  game.physics.startSystem(Phaser.Physics.ARCADE);
+
   //sprite background
   for(var i=0;i<100;i++){
     game.add.sprite(game.world.randomX,game.world.randomY,'diamond');
   }
-  enemy = game.add.group();
-  enemy.enablebody = true;
-  enemy.physicsBodyType = Phaser.Physics.ARCADE;
-  e = enemy.create(100,100,'enemy');
+  //enemies
+  enemy = game.add.sprite(100,100,'enemy');
+  enemy.name = 'eSpaceship';
+  game.physics.arcade.enable(enemy);
 
   //bullet1
   bullets1 = game.add.group();
-  bullets1.enableBody = true;
   bullets1.physicsBodyType = Phaser.Physics.ARCADE;
+  bullets1.enableBody = true;
+  game.physics.arcade.enable(bullets1);
 
   bullets1.createMultiple(40,'bullet');
   bullets1.setAll('anchor.x',0.5);
@@ -47,8 +51,9 @@ function create(){
 
   //bullet2
   bullets2 = game.add.group();
-  bullets2.enableBody = true;
   bullets2.physicsBodyType = Phaser.Physics.ARCADE;
+  bullets2.enableBody = true;
+  game.physics.arcade.enable(bullets2);
 
   bullets2.createMultiple(40,'bullet');
   bullets2.setAll('anchor.x',0.5);
@@ -57,8 +62,9 @@ function create(){
 
   //bullet3
   bullets3 = game.add.group();
-  bullets3.enableBody = true;
   bullets3.physicsBodyType = Phaser.Physics.ARCADE;
+  bullets3.enableBody = true;
+  game.physics.arcade.enable(bullets3);
 
   bullets3.createMultiple(40,'bullet');
   bullets3.setAll('anchor.x',0.5);
@@ -67,14 +73,10 @@ function create(){
 
   //player
   player = game.add.sprite(300,300,'firstaid');
-  game.physics.enable(player, Phaser.Physics.ARCADE);
+  game.physics.arcade.enable(player);
   player.anchor.set(0.5);
 
-  //physics
-  game.physics.startSystem(Phaser.Physics.ARCADE);
-
   //player physics
-  game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.drag.set(100);
   player.body.maxVelocity.set(200);
   player.body.collideWorldBounds = true;
@@ -129,8 +131,8 @@ function render() {
 //collision
 function collisionHandler(bullet, enemy){
   console.log("hello");
-  enemy.kill();
   bullet.kill();
+  enemy.kill();
 }
 
 //firebullet1
