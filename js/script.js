@@ -130,7 +130,6 @@ function render() {
 
 //collision
 function collisionHandler(bullet, enemy){
-  console.log("hello");
   bullet.kill();
   enemy.kill();
 }
