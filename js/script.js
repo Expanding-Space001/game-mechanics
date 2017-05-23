@@ -6,12 +6,17 @@ function preload(){
   game.load.image('diamond', 'assets/diamond.png');
   game.load.image('firstaid', 'assets/firstaid.png');
   game.load.image('bullet', 'assets/star.png');
+  game.load.image('enemyBullet', 'assets/star.png');
   game.load.image('enemy','assets/firstaid.png');
 }
 
 var cursors;
 var player;
-var enemy;
+var enemies;
+
+var enemyBullet;
+var firingTimer = 0;
+var livingEnemies = [];
 
 var bullet1;
 var bullets1;
@@ -34,9 +39,20 @@ function create(){
     game.add.sprite(game.world.randomX,game.world.randomY,'diamond');
   }
   //enemies
-  enemy = game.add.sprite(100,100,'enemy');
-  enemy.name = 'eSpaceship';
-  game.physics.arcade.enable(enemy);
+  enemies = game.add.group();
+  enemies.enableBody = true;
+  enemies.physicsBodyType = Phaser.Physics.ARCADE;
+  createEnemies();
+
+  //enemybullets
+  enemyBullets = game.add.group();
+  enemyBullets.enablebody = true;
+  enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+  enemyBullets.createMultiple(30,'enemyBullet');
+  enemyBullets.setAll('anchor.x',0.5);
+  enemyBullets.setAll('anchor.y',1);
+  enemyBullets.setAll('outOfBoundsKill',true);
+  enemyBullets.setAll('checkWorldBounds',true);
 
   //bullet1
   bullets1 = game.add.group();
@@ -73,7 +89,7 @@ function create(){
 
   //player
   player = game.add.sprite(300,300,'firstaid');
-  game.physics.arcade.enable(player);
+  game.physics.enable(player,Phaser.Physics.ARCADE);
   player.anchor.set(0.5);
 
   //player physics
@@ -90,42 +106,83 @@ function create(){
   game.camera.follow(player);
 }
 
+//put alien positions here
+function createEnemies(){
+  //1
+  var enemy = enemies.create(50,50,'enemy');
+  enemy.anchor.setTo(0.5,0.5);
+  //2
+  var enemy = enemies.create(100,50,'enemy');
+  enemy.anchor.setTo(0.5,0.5);
+}
+
 function update(){
-  //check collision
-  game.physics.arcade.overlap(bullets1, enemy, collisionHandler, null, this);
-  game.physics.arcade.overlap(bullets2, enemy, collisionHandler, null, this);
-  game.physics.arcade.overlap(bullets3, enemy, collisionHandler, null, this);
+  if(player.alive){
+    //forward
+    if(cursors.up.isDown){
+      game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
+    }
+    else{
+      player.body.acceleration.set(0,0);
+    }
 
-  //forward
-  if(cursors.up.isDown){
-    game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
-  }
-  else{
-    player.body.acceleration.set(0);
-  }
+    //turn
+    if (cursors.left.isDown)
+    {
+      player.body.angularVelocity = -100;
+    }
+    else if (cursors.right.isDown)
+    {
+      player.body.angularVelocity = 100;
+    }
+    else{
+      player.body.angularVelocity = 0;
+    }
 
-  //turn
-  if (cursors.left.isDown)
-  {
-    player.body.angularVelocity = -100;
-  }
-  else if (cursors.right.isDown)
-  {
-    player.body.angularVelocity = 100;
-  }
-  else{
-    player.body.angularVelocity = 0;
-  }
+    //shoot
+    if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      fireBullet1();
+      fireBullet2();
+      fireBullet3();
+    }
 
-  //shoot
-  if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-    fireBullet1();
-    fireBullet2();
-    fireBullet3();
+    //enemyshoot
+    if(game.time.now > firingTimer){
+      enemyFires();
+    }
+
+    //check collision
+    game.physics.arcade.overlap(bullets1, enemies, collisionHandler, null, this);
+    game.physics.arcade.overlap(bullets2, enemies, collisionHandler, null, this);
+    game.physics.arcade.overlap(bullets3, enemies, collisionHandler, null, this);
+    game.physics.arcade.overlap(enemybullets, player, enemyHitsPlayer, null, this);
   }
 }
 
 function render() {
+}
+//enemyfires
+function enemyFires(){
+  enemyBullet = enemyBullets.getFirstExists(false);
+  livingEnemies.length = 0;
+  enemies.forEachAlive(function(enemy){
+    livingEnemies.push(enemy);
+  });
+
+  if(enemyBullet && livingEnemies.length > 0){
+    var random = game.rnd.integerInRange(0,livingEnemies.length-1);
+    var shooter = livingEnemies[random];
+    enemyBullet.reset(shooter.body.x,shooter.body.y);
+
+    game.physics.arcade.moveToObject(enemyBullet,player,120);
+    firingTimer = game.time.now+2000;
+  }
+
+}
+
+function enemyHitsPlayer(player,bullet){
+  bullet.kill();
+  game.input.onTap.addOnce(restart,this);
 }
 
 //collision
