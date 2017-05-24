@@ -185,7 +185,7 @@ function enemyFires(){
 
 function enemyHitsPlayer(player,bullet){
   bullet.kill();
-  game.input.onTap.addOnce(restart,this);
+  location.reload(); //this is an error that should retart the room
 }
 
 //collision
