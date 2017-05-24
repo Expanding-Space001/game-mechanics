@@ -53,6 +53,7 @@ function create(){
   enemyBullets.setAll('anchor.y',1);
   enemyBullets.setAll('outOfBoundsKill',true);
   enemyBullets.setAll('checkWorldBounds',true);
+  game.physics.arcade.enable(enemyBullets);
 
   //bullet1
   bullets1 = game.add.group();
@@ -155,7 +156,7 @@ function update(){
     game.physics.arcade.overlap(bullets1, enemies, collisionHandler, null, this);
     game.physics.arcade.overlap(bullets2, enemies, collisionHandler, null, this);
     game.physics.arcade.overlap(bullets3, enemies, collisionHandler, null, this);
-    game.physics.arcade.overlap(enemybullets, player, enemyHitsPlayer, null, this);
+    game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this);
   }
 }
 
@@ -164,6 +165,8 @@ function render() {
 //enemyfires
 function enemyFires(){
   enemyBullet = enemyBullets.getFirstExists(false);
+  //enemyBullet.body.velocity.x = 5;
+  //enemyBullet.body.velocity.y = 5;
   livingEnemies.length = 0;
   enemies.forEachAlive(function(enemy){
     livingEnemies.push(enemy);
