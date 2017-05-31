@@ -15,6 +15,7 @@ var cursors;
 var player;
 var enemies;
 var rocks;
+var rHitbox;
 
 var enemyBullet;
 var firingTimer = 0;
@@ -37,13 +38,13 @@ function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
   //enemies
-  enemies = game.add.group();
-  enemies.enableBody = true;
-  enemies.physicsBodyType = Phaser.Physics.ARCADE;
-
   rocks = game.add.group();
   rocks.enableBody = true;
   rocks.physicsBodyType = Phaser.Physics.ARCADE;
+
+  enemies = game.add.group();
+  enemies.enableBody = true;
+  enemies.physicsBodyType = Phaser.Physics.ARCADE;
   createEnemies();
 
   //enemybullets
@@ -112,26 +113,43 @@ function create(){
 //put alien positions here
 function createEnemies(){
   //1
-  /*
+  var rock = rocks.create(-150,-100,'rock2');
+  rock.body.setSize(55,50,175,120);
+  rock.body.immovable = true;
   var enemy = enemies.create(50,50,'enemy');
   enemy.anchor.setTo(0.5,0.5);
 
   //2
   var enemy = enemies.create(100,50,'enemy');
   enemy.anchor.setTo(0.5,0.5);
+  var rock = rocks.create(-100,-100,'rock2');
+  rock.body.setSize(55,50,175,120);
+  rock.body.immovable = true;
+
   //3
   var enemy = enemies.create(492,152,'enemy');
   enemy.anchor.setTo(0.5,0.5);
+  var rock = rocks.create(292,2,'rock2');
+  rock.body.setSize(55,50,175,120);
+  rock.body.immovable = true;
+
   //4
   var enemy = enemies.create(162,254,'enemy');
   enemy.anchor.setTo(0.5,0.5);
+  var rock = rocks.create(-38,104,'rock2');
+  rock.body.setSize(55,50,175,120);
+  rock.body.immovable = true;
+
   //5
   var enemy = enemies.create(352,362,'enemy');
   enemy.anchor.setTo(0.5,0.5);
-*/
+  var rock = rocks.create(152,212,'rock2');
+  rock.body.setSize(55,50,175,120);
+  rock.body.immovable = true;
+
 
   //random enemy generator
-  for(let i =0; i<5;i++){
+  /*for(let i =0; i<5;i++){
   var randomX = game.world.randomX;
   var randomY = game.world.randomY;
     //if the random number are not too close
@@ -145,7 +163,7 @@ function createEnemies(){
   //  }
   //  else{
   //  }
-  }
+}*/
 
 }
 
