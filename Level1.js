@@ -3,12 +3,12 @@ var game = new Phaser.Game(1000,700, Phaser.CANVAS, '', {preload: preload, creat
 function preload(){
   game.stage.backgroundColor = '#372900';
 
-  game.load.image('diamond', 'assets/diamond.png');
-  game.load.image('firstaid', 'assets/firstaid.png');
-  game.load.image('bullet', 'assets/star.png');
-  game.load.image('enemyBullet', 'assets/star.png');
-  game.load.image('enemy','assets/firstaid.png');
-  game.load.image('rock2','assets/rock2.png');
+  game.load.image('diamond', 'images/diamond.png');
+  game.load.image('firstaid', 'images/firstaid.png');
+  game.load.image('bullet', 'images/star.png');
+  game.load.image('enemyBullet', 'images/star.png');
+  game.load.image('enemy','images/firstaid.png');
+  game.load.image('rock2','images/rock2.png');
 }
 
 var cursors;
