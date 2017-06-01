@@ -9,6 +9,8 @@
       <script src = "MainMenu.js"></script>
       <script src = "Preloader.js"></script>
       <script src = "Level1.js"></script>
+      <script src = "gameOver.js"></script>
+      <script src = "winScreen.js"></script>
   </head>
   <body>
 
@@ -20,6 +22,8 @@
       game.state.add('Preloader',Game.Preloader);
       game.state.add('MainMenu',Game.MainMenu);
       game.state.add('Level1',Game.Level1);
+      game.state.add('gameOver',Game.gameOver);
+      game.state.add('win',Game.win);
 
       game.state.start('Boot');
 
