@@ -86,7 +86,9 @@ enemyFires = function (){              //when the enemy fires
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
   bullet.kill();  //destroy the bullet
-  game.state.start('Level1');   //CHANGE THIS LATER!!!!1
+  player.loadTexture('dead',0);
+  setTimeout(function(){game.state.start('Level1');}, 1000);
+  //game.state.start('Level1');   //CHANGE THIS LATER!!!!1
 }
 
 //collision
@@ -307,9 +309,12 @@ Game.Level1.prototype = {
 
       //shoot
       if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+        player.loadTexture('laikaAttack',0);
         fireBullet1();
         fireBullet2();
         fireBullet3();
+        setTimeout(function(){
+          player.loadTexture('laika_idle',0);}, 500);
       }
 
       //enemyshoot
