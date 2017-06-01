@@ -14,6 +14,9 @@ Game.Preloader.prototype = {
       game.load.image('bullet', 'Images/Sprites/star.png');
       game.load.image('enemyBullet', 'Images/Sprites/star.png');
       game.load.image('enemy','Images/Sprites/firstaid.png');
+      game.load.image('rock2','Images/Sprites/rock2.png');
+      game.load.image('laika_idle','Images/Sprites/laika_idle.png');
+      game.load.image('albert', 'Images/Sprites/albert.png');
 
   },
 
