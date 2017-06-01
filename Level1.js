@@ -80,7 +80,7 @@ enemyFires = function (){              //when the enemy fires
     enemyBullet.reset(shooter.body.x,shooter.body.y); //places the bullet at the shooter
 
     game.physics.arcade.moveToObject(enemyBullet,player,120); //shoots towards the player
-    firingTimer = game.time.now+4000; //resets timer to 2 sec
+    firingTimer = game.time.now+3000; //resets timer to 2 sec
   }
 }
 
