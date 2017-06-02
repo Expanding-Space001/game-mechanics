@@ -170,7 +170,7 @@ screenWrap = function (player) {  //makes sure the player can't go out of bounds
 //when albert is saved
 savedAlbert = function (){
   console.log("You saved Albert, Congratulations!");
-  game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
+  game.state.start('win');   //CHANGE THIS LATER!!!!1
 }
 
 Game.Level1 = function(game){};
