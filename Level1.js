@@ -7,6 +7,7 @@ function stopMoving(player){
 
 //put alien positions here
 createEnemies = function (){
+/*
   //1 top left
   var rock = rocks.create(0,-100,'rock2');
   rock.body.setSize(55,50,175,120);
@@ -62,6 +63,36 @@ createEnemies = function (){
   var rock = rocks.create(550,200,'rock2');
   rock.body.setSize(55,50,175,120);
   rock.body.immovable = true;
+*/
+
+  //random position for aliens
+  for(let i = 0;i<10;i++){
+    var randomX = game.rnd.integerInRange(100,900);
+    var randomY = game.rnd.integerInRange(100,500);
+
+    var enemy = enemies.create(randomX,randomY,'enemy');
+    enemy.anchor.setTo(0.5,0.5);
+    var rock = rocks.create(randomX-200,randomY-150,'rock2');
+    rock.body.setSize(55,50,175,120);
+    rock.body.immovable = true;
+  }
+
+  //check if the rocks are too close together
+  for(let i =0;i<9;i++){
+    for(let j = i+1;j<10;j++){
+      //if the other enemy is withing the x +- 100 of the first
+      if(enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x){
+        //if the other enemy is withing the y +- 100 of the first
+        if(enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y){
+          //if the enemy is too close
+
+          //game.state.start('Level1');
+          enemies.children[j].kill();
+          rocks.children[j].kill();
+        }
+      }
+    }
+  }
 }
 
 //enemyfires
@@ -80,15 +111,15 @@ enemyFires = function (){              //when the enemy fires
     enemyBullet.reset(shooter.body.x,shooter.body.y); //places the bullet at the shooter
 
     game.physics.arcade.moveToObject(enemyBullet,player,120); //shoots towards the player
-    firingTimer = game.time.now+3000; //resets timer to 2 sec
+    firingTimer = game.time.now+2000; //resets timer to 1 sec
   }
 }
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
   bullet.kill();  //destroy the bullet
+  player.body.immovable = true;
   player.loadTexture('dead',0);
   setTimeout(function(){game.state.start('Level1');}, 1000);
-  //game.state.start('Level1');   //CHANGE THIS LATER!!!!1
 }
 
 //collision
@@ -170,7 +201,7 @@ screenWrap = function (player) {  //makes sure the player can't go out of bounds
 //when albert is saved
 savedAlbert = function (){
   console.log("You saved Albert, Congratulations!");
-  game.state.start('win');   //CHANGE THIS LATER!!!!1
+  game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
 }
 
 Game.Level1 = function(game){};
@@ -283,29 +314,29 @@ Game.Level1.prototype = {
   },
 
   update: function() {
-    hitRock = game.physics.arcade.collide(rocks, player);
-
     if(player.alive){
       //forward
       if(cursors.up.isDown){
-        game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
-    }
-      else{
-        player.body.acceleration.set(0,0);
+        //game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
+        player.body.y -= 2;
+      }
+      else if(cursors.down.isDown){
+        player.body.y += 2;
       }
 
       //turn
       if (cursors.left.isDown)
       {
-        player.body.angularVelocity = -100;
+        //player.body.angularVelocity = -100;
+        player.body.x -= 2;
       }
       else if (cursors.right.isDown)
       {
-        player.body.angularVelocity = 100;
+        //player.body.angularVelocity = 100;
+        player.body.x += 2;
       }
-      else{
-        player.body.angularVelocity = 0;
-      }
+
+      hitRock = game.physics.arcade.collide(rocks, player);
 
       //shoot
       if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
