@@ -6,67 +6,9 @@ function stopMoving(player){
 }
 
 //put alien positions here
-createEnemies = function (){
-/*
-  //1 top left
-  var rock = rocks.create(0,-100,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-  var enemy = enemies.create(200,50,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-
-  //2 down left
-  var enemy = enemies.create(150,500,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(-50,350,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //3 middle top
-  var enemy = enemies.create(492,152,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(292,2,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //4 middle left
-  var enemy = enemies.create(550,450,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(350,300,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //5 middle left
-  var enemy = enemies.create(352,362,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(152,212,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //6 top right
-  var enemy = enemies.create(700,125,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(500,-25,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //7 down right
-  var enemy = enemies.create(800,550,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(600,400,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-
-  //8 middle right
-  var enemy = enemies.create(750,350,'enemy');
-  enemy.anchor.setTo(0.5,0.5);
-  var rock = rocks.create(550,200,'rock2');
-  rock.body.setSize(55,50,175,120);
-  rock.body.immovable = true;
-*/
-
+createEnemies = function (maxEnemies){
   //random position for aliens
-  for(let i = 0;i<10;i++){
+  for(let i = 0;i<maxEnemies;i++){
     var randomX = game.rnd.integerInRange(100,900);
     var randomY = game.rnd.integerInRange(100,500);
 
@@ -78,17 +20,17 @@ createEnemies = function (){
   }
 
   //check if the rocks are too close together
-  for(let i =0;i<9;i++){
-    for(let j = i+1;j<10;j++){
+  for(let i =0;i<maxEnemies-1;i++){
+    for(let j = i+1;j<maxEnemies;j++){
       //if the other enemy is withing the x +- 100 of the first
       if(enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x){
         //if the other enemy is withing the y +- 100 of the first
         if(enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y){
           //if the enemy is too close
 
-          //game.state.start('Level1');
-          enemies.children[j].kill();
-          rocks.children[j].kill();
+          game.state.start('Level1');
+          //enemies.children[j].kill();
+          //rocks.children[j].kill();
         }
       }
     }
@@ -130,39 +72,31 @@ function collisionHandler(bullet, enemy){       //when the bullet hits the enemy
 
 //firebullet1
 fireBullet1 = function (){                         //fire the bullet straight forwards
-  if(game.time.now > bulletTime1){  //if the countdown is done
-    bullet1 = bullets1.getFirstExists(false); //make the first bullet in the list a object
-    if(bullet1){  //if it exists
-      bullet1.reset(player.body.x + 16, player.body.y + 16);  //places the bullet at the player
-      bullet1.lifespan = 2000;  //how long the bullet will live, 2 sec
-      bullet1.rotation = player.rotation; //gives the bullet the same angle as the player
+  bullet1 = bullets1.getFirstExists(false); //make the first bullet in the list a object
+  if(bullet1){  //if it exists
+    bullet1.reset(player.body.x + 16, player.body.y + 16);  //places the bullet at the player
+    bullet1.lifespan = 2000;  //how long the bullet will live, 2 sec
+    bullet1.rotation = player.rotation; //gives the bullet the same angle as the player
 
-      game.physics.arcade.velocityFromRotation(player.rotation, 400, bullet1.body.velocity); //don't know
-
-      bulletTime1 = game.time.now + 1000; //restarts counter
-    }
+    game.physics.arcade.velocityFromRotation(player.rotation, 400, bullet1.body.velocity); //don't know
   }
 }
 
+
 //firebullet2
 fireBullet2 = function (){
-  if(game.time.now > bulletTime2){
-    bullet2 = bullets2.getFirstExists(false);
-    if(bullet2){
-      bullet2.reset(player.body.x + 16, player.body.y + 16);
-      bullet2.lifespan = 2000;
-      bullet2.rotation = player.rotation;
+  bullet2 = bullets2.getFirstExists(false);
+  if(bullet2){
+    bullet2.reset(player.body.x + 16, player.body.y + 16);
+    bullet2.lifespan = 2000;
+    bullet2.rotation = player.rotation;
 
-      game.physics.arcade.velocityFromRotation(player.rotation+100, 400, bullet2.body.velocity);
-
-      bulletTime2 = game.time.now + 1000;
-    }
+    game.physics.arcade.velocityFromRotation(player.rotation+100, 400, bullet2.body.velocity);
   }
 }
 
 //firebullet3
 fireBullet3 = function (){
-  if(game.time.now > bulletTime3){
     bullet3 = bullets3.getFirstExists(false);
     if(bullet3){
       bullet3.reset(player.body.x + 16, player.body.y + 16);
@@ -170,12 +104,9 @@ fireBullet3 = function (){
       bullet3.rotation = player.rotation;
 
       game.physics.arcade.velocityFromRotation(player.rotation-100, 400, bullet3.body.velocity);
-
-
-      bulletTime3 = game.time.now + 1000;
     }
-  }
 }
+
 
 screenWrap = function (player) {  //makes sure the player can't go out of bounds
 
@@ -213,21 +144,21 @@ var rocks;
 var hitRock;
 var albert;
 
+var maxEnemies = 10;
+
 var enemyBullet;
 var firingTimer = 0;
 var livingEnemies = [];
 
 var bullet1;
 var bullets1;
-var bulletTime1 = 1000;
+var bulletTime = 1000;
 
 var bullet2;
 var bullets2;
-var bulletTime2 = 1000;
 
 var bullet3;
 var bullets3;
-var bulletTime3 = 1000;
 
 Game.Level1.prototype = {
   create:function(){
@@ -242,7 +173,7 @@ Game.Level1.prototype = {
     enemies = game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
-    createEnemies();
+    createEnemies(maxEnemies);
 
     //enemybullets
     enemyBullets = game.add.group();
@@ -339,13 +270,16 @@ Game.Level1.prototype = {
       hitRock = game.physics.arcade.collide(rocks, player);
 
       //shoot
-      if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-        player.loadTexture('laikaAttack',0);
-        fireBullet1();
-        fireBullet2();
-        fireBullet3();
-        setTimeout(function(){
-          player.loadTexture('laika_idle',0);}, 500);
+      if(game.input.activePointer.leftButton.isDown){
+        if(game.time.now > bulletTime){
+          player.loadTexture('laikaAttack',0);
+          fireBullet1();
+          fireBullet2();
+          fireBullet3();
+          setTimeout(function(){
+            player.loadTexture('laika_idle',0);}, 300);
+          bulletTime = game.time.now + 1000;
+        }
       }
 
       //enemyshoot
@@ -360,6 +294,8 @@ Game.Level1.prototype = {
         player.body.velocity.x = 1;
         //player.body.angularVelocity = 0;
       }
+      //rotate to the mouse
+      player.rotation = game.physics.arcade.angleToPointer(player);
 
       //check collision
       game.physics.arcade.collide(player,albert, savedAlbert,null,this);
