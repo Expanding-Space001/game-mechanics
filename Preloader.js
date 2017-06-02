@@ -6,6 +6,7 @@ Game.Preloader.prototype = {
   preload:function (){
       this.load.image('titlescreen','Images/Menu/titlescreen.jpg');
       this.load.image('button','Images/Menu/button.png');
+      this.load.image('win','Images/Menu/win.png');
 
       game.stage.backgroundColor = '#372900';
 
