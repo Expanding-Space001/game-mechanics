@@ -8,7 +8,7 @@ Game.Preloader.prototype = {
       this.load.image('button','Images/Menu/button.png');
       this.load.image('win','Images/Menu/win.png');
 
-      game.stage.backgroundColor = '#372900';
+      this.load.image('background','Images/Background/bg.png');
 
       game.load.image('diamond', 'Images/Sprites/diamond.png');
       game.load.image('firstaid', 'Images/Sprites/firstaid.png');
