@@ -237,7 +237,10 @@ Game.Level1.prototype = {
 
     //input
     cursors = game.input.keyboard.createCursorKeys();
-    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+    game.input.keyboard.addKeyCapture(Phaser.Keyboard.W);
+    game.input.keyboard.addKeyCapture(Phaser.Keyboard.S);
+    game.input.keyboard.addKeyCapture(Phaser.Keyboard.A);
+    game.input.keyboard.addKeyCapture(Phaser.Keyboard.D);
 
     //camera
     game.camera.width=600;
@@ -247,21 +250,21 @@ Game.Level1.prototype = {
   update: function() {
     if(player.alive){
       //forward
-      if(cursors.up.isDown){
+      if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
         //game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
         player.body.y -= 2;
       }
-      else if(cursors.down.isDown){
+      else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
         player.body.y += 2;
       }
 
       //turn
-      if (cursors.left.isDown)
+      if (game.input.keyboard.isDown(Phaser.Keyboard.A))
       {
         //player.body.angularVelocity = -100;
         player.body.x -= 2;
       }
-      else if (cursors.right.isDown)
+      else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
       {
         //player.body.angularVelocity = 100;
         player.body.x += 2;
