@@ -162,6 +162,9 @@ var bullets3;
 
 Game.Level1.prototype = {
   create:function(){
+    //background
+    var background = game.add.sprite(0,0,'background');
+
     //physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
