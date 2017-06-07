@@ -119,7 +119,7 @@ createEnemies = function (maxEnemies){
     rock.body.immovable = true;
   }
 
-  player = game.add.sprite(100,300,'laika_idle');
+  player = game.add.sprite(100,300,'shoot',0);
   albert = game.add.sprite(900,300,'albert');
 
 
@@ -151,6 +151,8 @@ var enemies;
 var rocks;
 var hitRock;
 var albert;
+
+var anim;
 
 var maxEnemies = 9;
 
@@ -233,6 +235,7 @@ Game.Level1.prototype = {
     //player
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
+    anim = player.animations.add('fire');
 
     //goal
     game.physics.enable(albert,Phaser.Physics.ARCADE);
@@ -283,13 +286,16 @@ Game.Level1.prototype = {
       //shoot
       if(game.input.activePointer.leftButton.isDown){
         if(game.time.now > bulletTime){
-          player.loadTexture('laikaAttack',0);
-          fireBullet1();
-          fireBullet2();
-          fireBullet3();
+          anim.play(20);
+          //player.loadTexture('laikaAttack',0);
           setTimeout(function(){
-            player.loadTexture('laika_idle',0);}, 300);
+            fireBullet1();
+            fireBullet2();
+            fireBullet3();},400);
           bulletTime = game.time.now + 1000;
+          anim.onComplete.add(function finished(){
+            player.loadTexture('shoot',0);
+          },this);
         }
       }
 
