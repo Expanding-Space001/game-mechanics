@@ -7,6 +7,7 @@ Game.Preloader.prototype = {
       this.load.image('titlescreen','Images/Menu/titlescreen.jpg');
       this.load.image('button','Images/Menu/button.png');
       this.load.image('win','Images/Menu/win.png');
+      this.load.image('loading','Images/Menu/loading.png');
 
       this.load.image('background','Images/Background/bg.png');
 
