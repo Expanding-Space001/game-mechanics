@@ -5,38 +5,6 @@ function stopMoving(player){
     player.body.velocity.y = 0;
 }
 
-//put alien positions here
-createEnemies = function (maxEnemies){
-  //random position for aliens
-  for(let i = 0;i<maxEnemies;i++){
-    var randomX = game.rnd.integerInRange(100,900);
-    var randomY = game.rnd.integerInRange(100,500);
-
-    var enemy = enemies.create(randomX,randomY,'enemy');
-    enemy.anchor.setTo(0.5,0.5);
-    var rock = rocks.create(randomX-200,randomY-150,'rock2');
-    rock.body.setSize(55,50,175,120);
-    rock.body.immovable = true;
-  }
-
-  //check if the rocks are too close together
-  for(let i =0;i<maxEnemies-1;i++){
-    for(let j = i+1;j<maxEnemies;j++){
-      //if the other enemy is withing the x +- 100 of the first
-      if(enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x){
-        //if the other enemy is withing the y +- 100 of the first
-        if(enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y){
-          //if the enemy is too close
-
-          game.state.start('Level1');
-          //enemies.children[j].kill();
-          //rocks.children[j].kill();
-        }
-      }
-    }
-  }
-}
-
 //enemyfires
 enemyFires = function (){              //when the enemy fires
   enemyBullet = enemyBullets.getFirstExists(false); //first bullet in the list
@@ -135,6 +103,44 @@ savedAlbert = function (){
   game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
 }
 
+//put alien positions here
+createEnemies = function (maxEnemies){
+  //random position for aliens
+  for(let i = 0;i<maxEnemies;i++){
+    var randomX = game.rnd.integerInRange(100,900);
+    var randomY = game.rnd.integerInRange(100,500);
+
+    var enemy = enemies.create(randomX,randomY,'enemy');
+    enemy.anchor.setTo(0.5,0.5);
+    var rock = rocks.create(randomX-200,randomY-150,'rock2');
+    rock.body.setSize(55,50,175,120);
+    rock.body.immovable = true;
+  }
+
+
+  player = game.add.sprite(100,300,'laika_idle');
+  albert = game.add.sprite(900,300,'albert');
+
+
+  //check if the rocks are too close together
+  for(let i =0;i<maxEnemies-1;i++){
+    for(let j = i+1;j<maxEnemies;j++){
+      //if the other enemy is withing the x +- 100 of the first
+      if(enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x){
+        //if the other enemy is withing the y +- 100 of the first
+        if(enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y){
+          //if the enemy is too close
+
+          game.state.start('Level1');
+          //enemies.children[j].kill();
+          //rocks.children[j].kill();
+          var loading = game.add.image(0, 0, 'loading');
+        }
+      }
+    }
+  }
+}
+
 Game.Level1 = function(game){};
 
 var cursors;
@@ -161,10 +167,8 @@ var bullet3;
 var bullets3;
 
 Game.Level1.prototype = {
-  create:function(){
-    //background
-    var background = game.add.sprite(0,0,'background');
 
+  create:function(){
     //physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -223,27 +227,21 @@ Game.Level1.prototype = {
     bullets3.outOfBoundsKill = true;
 
     //player
-    player = game.add.sprite(100,300,'laika_idle');
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
 
     //goal
-    albert = game.add.sprite(900,300,'albert');
     game.physics.enable(albert,Phaser.Physics.ARCADE);
     albert.anchor.set(0.5);
     albert.body.immovable = true;
 
     //player physics
-    player.body.drag.set(100);
-    player.body.maxVelocity.set(200);
+    player.body.maxVelocity.set(100);
     player.body.collideWorldBounds = true;
 
     //input
     cursors = game.input.keyboard.createCursorKeys();
-    game.input.keyboard.addKeyCapture(Phaser.Keyboard.W);
-    game.input.keyboard.addKeyCapture(Phaser.Keyboard.S);
-    game.input.keyboard.addKeyCapture(Phaser.Keyboard.A);
-    game.input.keyboard.addKeyCapture(Phaser.Keyboard.D);
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
 
     //camera
     game.camera.width=600;
@@ -252,25 +250,24 @@ Game.Level1.prototype = {
 
   update: function() {
     if(player.alive){
-      //forward
-      if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
-        //game.physics.arcade.accelerationFromRotation(player.rotation, 100, player.body.acceleration);
-        player.body.y -= 2;
+
+      if(cursors.up.isDown){
+
+        player.body.velocity.y -= 5;
       }
-      else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
-        player.body.y += 2;
+      else if(cursors.down.isDown){
+        player.body.velocity.y += 5;
       }
 
-      //turn
-      if (game.input.keyboard.isDown(Phaser.Keyboard.A))
+
+      if (cursors.left.isDown)
       {
-        //player.body.angularVelocity = -100;
-        player.body.x -= 2;
+
+        player.body.velocity.x -= 5;
       }
-      else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
+      else if (cursors.right.isDown)
       {
-        //player.body.angularVelocity = 100;
-        player.body.x += 2;
+        player.body.velocity.x += 5;
       }
 
       hitRock = game.physics.arcade.collide(rocks, player);
@@ -290,14 +287,14 @@ Game.Level1.prototype = {
 
       //enemyshoot
       if(game.time.now > firingTimer){
-        enemyFires();
+        //enemyFires();
       }
 
       //if the player hits the rock
       if(hitRock){
         //player.body.acceleration.set(0,0);
-        player.body.velocity.y = 1;
-        player.body.velocity.x = 1;
+        player.body.velocity.y = 0;
+        player.body.velocity.x = 0;
         //player.body.angularVelocity = 0;
       }
       //rotate to the mouse
