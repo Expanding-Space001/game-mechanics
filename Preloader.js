@@ -9,10 +9,10 @@ Game.Preloader.prototype = {
       this.load.image('win','Images/Menu/win.png');
       this.load.image('loading','Images/Menu/loading.png');
 
-      game.load.spritesheet('dead', 'Images/Sprites/deadSpritesheet.png',50,50);
+      //game.load.spritesheet('dead', 'Images/Sprites/deadSpritesheet.png',50,50);
       game.load.spritesheet('shoot', 'Images/Sprites/goodfire.png',50,50);
 
-      this.load.image('background','Images/Background/bg.png');
+      game.load.image('background','Images/Background/bg.png');
 
       game.load.image('diamond', 'Images/Sprites/diamond.png');
       game.load.image('firstaid', 'Images/Sprites/firstaid.png');

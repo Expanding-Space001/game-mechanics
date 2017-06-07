@@ -1,4 +1,5 @@
 //var game = new Phaser.Game(1000,700, Phaser.CANVAS, '', {preload: preload, create: create, update: update, render: render});
+
 //stop the player from moving
 function stopMoving(player){
     player.body.velocity.x = 0;
@@ -100,11 +101,12 @@ screenWrap = function (player) {  //makes sure the player can't go out of bounds
 //when albert is saved
 savedAlbert = function (){
   console.log("You saved Albert, Congratulations!");
-  game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
+  game.state.start('MainMenu');
 }
 
 //put alien positions here
 createEnemies = function (maxEnemies){
+
   //random position for aliens
   for(let i = 0;i<maxEnemies;i++){
     var randomX = game.rnd.integerInRange(100,900);
@@ -116,7 +118,6 @@ createEnemies = function (maxEnemies){
     rock.body.setSize(55,50,175,120);
     rock.body.immovable = true;
   }
-
 
   player = game.add.sprite(100,300,'laika_idle');
   albert = game.add.sprite(900,300,'albert');
@@ -143,6 +144,7 @@ createEnemies = function (maxEnemies){
 
 Game.Level1 = function(game){};
 
+var bg;
 var cursors;
 var player;
 var enemies;
@@ -150,7 +152,7 @@ var rocks;
 var hitRock;
 var albert;
 
-var maxEnemies = 10;
+var maxEnemies = 9;
 
 var enemyBullet;
 var firingTimer = 0;
@@ -169,6 +171,8 @@ var bullets3;
 Game.Level1.prototype = {
 
   create:function(){
+    //background
+    bg = game.add.sprite(0,0,'background');
     //physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -242,6 +246,10 @@ Game.Level1.prototype = {
     //input
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+    game.input.keyboard.addKey(Phaser.Keyboard.W);
+    game.input.keyboard.addKey(Phaser.Keyboard.S);
+    game.input.keyboard.addKey(Phaser.Keyboard.A);
+    game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     //camera
     game.camera.width=600;
@@ -251,21 +259,21 @@ Game.Level1.prototype = {
   update: function() {
     if(player.alive){
 
-      if(cursors.up.isDown){
+      if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
 
         player.body.velocity.y -= 5;
       }
-      else if(cursors.down.isDown){
+      else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
         player.body.velocity.y += 5;
       }
 
 
-      if (cursors.left.isDown)
+      if (game.input.keyboard.isDown(Phaser.Keyboard.A))
       {
 
         player.body.velocity.x -= 5;
       }
-      else if (cursors.right.isDown)
+      else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
       {
         player.body.velocity.x += 5;
       }
@@ -287,7 +295,7 @@ Game.Level1.prototype = {
 
       //enemyshoot
       if(game.time.now > firingTimer){
-        //enemyFires();
+        enemyFires();
       }
 
       //if the player hits the rock
