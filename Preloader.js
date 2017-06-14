@@ -12,6 +12,8 @@ Game.Preloader.prototype = {
       game.load.image('HowToBackg','Images/Menu/HowTo.png');
       game.load.image('Terug','Images/Menu/terug.png');
 
+      game.load.spritesheet('shoot','Images/Sprites/goodfire.png',100,50,20);
+
       this.load.image('background','Background/bg.png');
 
       game.load.image('diamond', 'Images/Sprites/diamond.png');
@@ -22,10 +24,10 @@ Game.Preloader.prototype = {
       game.load.image('rock2','Images/Sprites/rock2.png');
       game.load.image('laika_idle','Images/Sprites/laika_idle.png');
       game.load.image('albert', 'Images/Sprites/albert.png');
-      game.load.image('dead','Images/Sprites/laikaDead.png');
+      game.load.image('laika_die','Images/Sprites/laikaDead.png');
       game.load.image('laikaAttack','Images/Sprites/laikaAttack.png');
 
-      game.load.spritesheet('LaikaBark','Images/Sprites/LaikaBark.png',550,500,20);
+      //game.load.spritesheet('LaikaBark','Images/Sprites/LaikaBark.png',550,500,20);
 
   },
 

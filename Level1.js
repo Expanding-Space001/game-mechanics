@@ -21,11 +21,12 @@ enemyFires = function (){              //when the enemy fires
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
   bullet.kill();  //destroy the bullet
+  player.body.immovable = true;
   player.body.velocity.x=0;
   player.body.velocity.y=0;
-  player.loadTexture('dead',0);
+  player.loadTexture('laika_die');
   setTimeout(function(){game.state.start('Level1');}, 1000);
-  
+
 }
 
 //collision
@@ -114,7 +115,7 @@ createEnemies = function (maxEnemies){
   }
 
 
-  player = game.add.sprite(100,300,'laika_idle');
+  player = game.add.sprite(100,300,'shoot',0);
   albert = game.add.sprite(900,300,'albert');
 
 
@@ -145,6 +146,8 @@ var enemies;
 var rocks;
 var hitRock;
 var albert;
+
+var anim;
 
 var maxEnemies = 10;
 
@@ -227,6 +230,7 @@ Game.Level1.prototype = {
     //player
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
+    anim = player.animations.add('fire');
 
     //goal
     game.physics.enable(albert,Phaser.Physics.ARCADE);
@@ -240,6 +244,10 @@ Game.Level1.prototype = {
     //input
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+    game.input.keyboard.addKey(Phaser.Keyboard.W);
+    game.input.keyboard.addKey(Phaser.Keyboard.S);
+    game.input.keyboard.addKey(Phaser.Keyboard.A);
+    game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     //camera
     game.camera.width=600;
@@ -252,21 +260,21 @@ Game.Level1.prototype = {
 
     if(player.alive){
 
-      if(cursors.up.isDown){
+      if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
 
         player.body.velocity.y -= 5;
       }
-      else if(cursors.down.isDown){
+      else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
         player.body.velocity.y += 5;
       }
 
 
-      if (cursors.left.isDown)
+      if (game.input.keyboard.isDown(Phaser.Keyboard.A))
       {
 
         player.body.velocity.x -= 5;
       }
-      else if (cursors.right.isDown)
+      else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
       {
         player.body.velocity.x += 5;
       }
@@ -276,13 +284,15 @@ Game.Level1.prototype = {
       //shoot
       if(game.input.activePointer.leftButton.isDown){
         if(game.time.now > bulletTime){
-          player.loadTexture('laikaAttack',0);
-          fireBullet1();
-          fireBullet2();
-          fireBullet3();
+          anim.play(20);
           setTimeout(function(){
-            player.loadTexture('laika_idle',0);}, 300);
+            fireBullet1();
+            fireBullet2();
+            fireBullet3();},400);
           bulletTime = game.time.now + 1000;
+          anim.onComplete.add(function finished(){
+            player.loadTexture('shoot',0);
+          },this);
         }
       }
 
