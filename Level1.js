@@ -110,7 +110,7 @@ createEnemies = function (maxEnemies){
     var enemy = enemies.create(randomX,randomY,'enemy');
     enemy.anchor.setTo(0.5,0.5);
     var rock = rocks.create(randomX-200,randomY-150,'rock2');
-    rock.body.setSize(55,50,175,120);
+    rock.body.setSize(5,50,195,120);
     rock.body.immovable = true;
   }
 
