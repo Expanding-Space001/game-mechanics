@@ -123,9 +123,11 @@ createEnemies = function (maxEnemies){
   for(let i =0;i<maxEnemies-1;i++){
     for(let j = i+1;j<maxEnemies;j++){
       //if the other enemy is withing the x +- 100 of the first
-      if(enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x){
+      if((enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x) ||
+      (enemies.children[i].body.x+100 > player.position.x && enemies.children[i].body.x-100 < player.position.x)){
         //if the other enemy is withing the y +- 100 of the first
-        if(enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y){
+        if((enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y) ||
+        (enemies.children[j].body.x+100 > player.position.x && enemies.children[j].body.x-100 < player.position.x)){
           //if the enemy is too close
 
           game.state.start('Level1');
