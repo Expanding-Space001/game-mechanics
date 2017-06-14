@@ -1,10 +1,3 @@
-//var game = new Phaser.Game(1000,700, Phaser.CANVAS, '', {preload: preload, create: create, update: update, render: render});
-
-//stop the player from moving
-function stopMoving(player){
-    player.body.velocity.x = 0;
-    player.body.velocity.y = 0;
-}
 
 //enemyfires
 enemyFires = function (){              //when the enemy fires
@@ -28,12 +21,11 @@ enemyFires = function (){              //when the enemy fires
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
   bullet.kill();  //destroy the bullet
-  player.body.immovable = true;
-  player.body.velocity.y = 0;
-  player.body.velocity.x = 0;
-  player.loadTexture('laika_die');
-
+  player.body.velocity.x=0;
+  player.body.velocity.y=0;
+  player.loadTexture('dead',0);
   setTimeout(function(){game.state.start('Level1');}, 1000);
+  
 }
 
 //collision
@@ -104,12 +96,11 @@ screenWrap = function (player) {  //makes sure the player can't go out of bounds
 //when albert is saved
 savedAlbert = function (){
   console.log("You saved Albert, Congratulations!");
-  game.state.start('MainMenu');
+  game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
 }
 
 //put alien positions here
 createEnemies = function (maxEnemies){
-
   //random position for aliens
   for(let i = 0;i<maxEnemies;i++){
     var randomX = game.rnd.integerInRange(100,900);
@@ -122,7 +113,8 @@ createEnemies = function (maxEnemies){
     rock.body.immovable = true;
   }
 
-  player = game.add.sprite(100,300,'shoot',0);
+
+  player = game.add.sprite(100,300,'laika_idle');
   albert = game.add.sprite(900,300,'albert');
 
 
@@ -147,7 +139,6 @@ createEnemies = function (maxEnemies){
 
 Game.Level1 = function(game){};
 
-var bg;
 var cursors;
 var player;
 var enemies;
@@ -155,9 +146,7 @@ var rocks;
 var hitRock;
 var albert;
 
-var anim;
-
-var maxEnemies = 9;
+var maxEnemies = 10;
 
 var enemyBullet;
 var firingTimer = 0;
@@ -174,11 +163,11 @@ var bullet3;
 var bullets3;
 
 Game.Level1.prototype = {
-
   create:function(){
-    //background
-    bg = game.add.sprite(0,0,'background');
-    //physics
+
+
+    //Add a background
+    var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //enemies
@@ -238,7 +227,6 @@ Game.Level1.prototype = {
     //player
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
-    anim = player.animations.add('fire');
 
     //goal
     game.physics.enable(albert,Phaser.Physics.ARCADE);
@@ -252,10 +240,6 @@ Game.Level1.prototype = {
     //input
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
-    game.input.keyboard.addKey(Phaser.Keyboard.W);
-    game.input.keyboard.addKey(Phaser.Keyboard.S);
-    game.input.keyboard.addKey(Phaser.Keyboard.A);
-    game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     //camera
     game.camera.width=600;
@@ -263,23 +247,26 @@ Game.Level1.prototype = {
   },
 
   update: function() {
+    player.body.drag.set(100);
+
+
     if(player.alive){
 
-      if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
+      if(cursors.up.isDown){
 
         player.body.velocity.y -= 5;
       }
-      else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
+      else if(cursors.down.isDown){
         player.body.velocity.y += 5;
       }
 
 
-      if (game.input.keyboard.isDown(Phaser.Keyboard.A))
+      if (cursors.left.isDown)
       {
 
         player.body.velocity.x -= 5;
       }
-      else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
+      else if (cursors.right.isDown)
       {
         player.body.velocity.x += 5;
       }
@@ -289,15 +276,13 @@ Game.Level1.prototype = {
       //shoot
       if(game.input.activePointer.leftButton.isDown){
         if(game.time.now > bulletTime){
-          anim.play(20);
+          player.loadTexture('laikaAttack',0);
+          fireBullet1();
+          fireBullet2();
+          fireBullet3();
           setTimeout(function(){
-            fireBullet1();
-            fireBullet2();
-            fireBullet3();},400);
+            player.loadTexture('laika_idle',0);}, 300);
           bulletTime = game.time.now + 1000;
-          anim.onComplete.add(function finished(){
-            player.loadTexture('shoot',0);
-          },this);
         }
       }
 

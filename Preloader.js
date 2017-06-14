@@ -4,15 +4,15 @@ Game.Preloader = function(game){
 
 Game.Preloader.prototype = {
   preload:function (){
-      this.load.image('titlescreen','Images/Menu/titlescreen.jpg');
-      this.load.image('button','Images/Menu/button.png');
-      this.load.image('win','Images/Menu/win.png');
-      this.load.image('loading','Images/Menu/loading.png');
+      game.load.image('titlescreen','Images/Menu/titlescreen.png');
+      game.load.image('win','Images/Menu/win.png');
+      game.load.image('loading','Images/Menu/loading.png');
+      game.load.image('HowTo','Images/Menu/HowToB.png');
+      game.load.image('Play','Images/Menu/PlayB.png');
+      game.load.image('HowToBackg','Images/Menu/HowTo.png');
+      game.load.image('Terug','Images/Menu/terug.png');
 
-      //game.load.spritesheet('dead', 'Images/Sprites/goodDeath.png',50,50,16);
-      game.load.spritesheet('shoot', 'Images/Sprites/goodfire.png',100,50,20);
-
-      game.load.image('background','Images/Background/bg.png');
+      this.load.image('background','Background/bg.png');
 
       game.load.image('diamond', 'Images/Sprites/diamond.png');
       game.load.image('firstaid', 'Images/Sprites/firstaid.png');
@@ -22,7 +22,11 @@ Game.Preloader.prototype = {
       game.load.image('rock2','Images/Sprites/rock2.png');
       game.load.image('laika_idle','Images/Sprites/laika_idle.png');
       game.load.image('albert', 'Images/Sprites/albert.png');
-      game.load.image('laika_die','Images/Sprites/laikaDead.png');
+      game.load.image('dead','Images/Sprites/laikaDead.png');
+      game.load.image('laikaAttack','Images/Sprites/laikaAttack.png');
+
+      game.load.spritesheet('LaikaBark','Images/Sprites/LaikaBark.png',550,500,20);
+
   },
 
   create:function (){
