@@ -27,14 +27,12 @@ enemyFires = function (){              //when the enemy fires
 }
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
-  animD.play(16);
   bullet.kill();  //destroy the bullet
   player.body.immovable = true;
   player.body.velocity.y = 0;
   player.body.velocity.x = 0;
-  animD.onComplete.add(function finished(){
-    player.loadTexture('dead',15);
-  },this);
+  player.loadTexture('laika_die');
+
   setTimeout(function(){game.state.start('Level1');}, 1000);
 }
 
@@ -158,7 +156,6 @@ var hitRock;
 var albert;
 
 var anim;
-var animD;
 
 var maxEnemies = 9;
 
@@ -242,7 +239,6 @@ Game.Level1.prototype = {
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
     anim = player.animations.add('fire');
-    animD = player.animations.add('die');
 
     //goal
     game.physics.enable(albert,Phaser.Physics.ARCADE);
