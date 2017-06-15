@@ -21,12 +21,13 @@ enemyFires = function (){              //when the enemy fires
 
 enemyHitsPlayer = function (player,bullet){        //when the bullet hits the player
   bullet.kill();  //destroy the bullet
-  player.body.immovable = true;
-  player.body.velocity.x=0;
-  player.body.velocity.y=0;
-  player.loadTexture('laika_die');
-  setTimeout(function(){game.state.start('Level1');}, 1000);
+  lives = lives-1;
+  player.loadTexture('LaikaHit');
+  game.time.events.add(Phaser.Timer.SECOND * 1, changeToIdle , this);
+}
 
+changeToIdle = function(){
+  player.loadTexture('shoot');
 }
 
 //collision
@@ -97,7 +98,7 @@ screenWrap = function (player) {  //makes sure the player can't go out of bounds
 //when albert is saved
 savedAlbert = function (){
   console.log("You saved Albert, Congratulations!");
-  game.state.start('MainMenu');   //CHANGE THIS LATER!!!!1
+  game.state.start('win');   //CHANGE THIS LATER!!!!1
 }
 
 //put alien positions here
@@ -131,6 +132,7 @@ createEnemies = function (maxEnemies){
           //if the enemy is too close
 
           game.state.start('Level1');
+          lives = 3;
           //enemies.children[j].kill();
           //rocks.children[j].kill();
           var loading = game.add.image(0, 0, 'loading');
@@ -142,6 +144,8 @@ createEnemies = function (maxEnemies){
 
 Game.Level1 = function(game){};
 
+var lives = 3;
+
 var cursors;
 var player;
 var enemies;
@@ -151,7 +155,7 @@ var albert;
 
 var anim;
 
-var maxEnemies = 10;
+var maxEnemies = 9;
 
 var enemyBullet;
 var firingTimer = 0;
@@ -257,6 +261,13 @@ Game.Level1.prototype = {
   },
 
   update: function() {
+
+    if (lives == 0)
+    {
+      player.loadTexture('laika_die');
+      setTimeout(function(){game.state.start('gameOver');}, 1000);
+    }
+
     player.body.drag.set(100);
 
 

@@ -3,42 +3,27 @@ Game.win = function(game){
 };
 
 Game.win.prototype = {
-  preload:function (){
+  create:function(game){
 
+      titlescreen = game.add.sprite(0,0,'win');
+
+      this.createButton(game,game.world.centerX + 340, game.world.centerY + 260,280,40,
+      function(){
+        this.state.start('MainMenu');
+      });
 
   },
 
-  create:function (){
-    this.createButton(game,"Play Again",game.world.centerX,game.world.centerY + 32,300,100,
-    function(){
-      this.state.start('Level1');
-    });
+  update:function(game){
 
-    this.createButton(game,"Main Menu",game.world.centerX,game.world.centerY + 192,300,100,
-    function(){
-      this.state.start('MainMenu');
-    });
-
-    titlescreen = game.add.sprite(game.world.centerX,game.world.centerY - 192,'win');
-    titlescreen.anchor.setTo(0.5,0.5);
   },
 
-
-  createButton:function(game,string,x,y,w,h,callback){
-    var button1 = game.add.button(x,y,'button',callback,this,2,1,0);
+  createButton:function(game,x,y,w,h,callback){
+    var button1 = game.add.button(x,y,'TerugNaarMenu',callback,this,2,1,0);
 
     button1.anchor.setTo(0.5,0.5);
     button1.width = w;
     button1.height = h;
-
-    var txt = game.add.text(button1.x,button1.y, string, {
-      font:"40px Arial",
-      fill:"#fff",
-      align:"center",
-      boundsAlignH: "center",
-      boundsAlignV:"center"
-    });
-    txt.anchor.setTo(0.5,0.5);
-  }
+  },
 
 }
