@@ -27,7 +27,7 @@ enemyHitsPlayer = function (player,bullet){        //when the bullet hits the pl
 }
 
 changeToIdle = function(){
-  player.loadTexture('shoot');
+  player.loadTexture('laika_idle');
 }
 
 //collision
@@ -174,7 +174,7 @@ var bullets3;
 Game.Level1.prototype = {
   create:function(){
 
-
+    game.world.setBounds(0, 0, 1000*2, 600);
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
