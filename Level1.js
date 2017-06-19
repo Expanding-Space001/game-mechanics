@@ -1,3 +1,12 @@
+//enemyMovement
+enemyMovement = function (i){
+  if(enemies.children[i].body.y > listY[i]+100){
+    direction[i] = false;
+  }
+  if(enemies.children[i].body.y < listY[i]-100){
+    direction[i] = true;
+  }
+}
 
 //enemyfires
 enemyFires = function (){              //when the enemy fires
@@ -105,8 +114,11 @@ savedAlbert = function (){
 createEnemies = function (maxEnemies){
   //random position for aliens
   for(let i = 0;i<maxEnemies;i++){
-    var randomX = game.rnd.integerInRange(100,900);
+    var randomX = game.rnd.integerInRange(450,1350);
     var randomY = game.rnd.integerInRange(100,500);
+
+    listX[i] = randomX;
+    listY[i] = randomY;
 
     var enemy = enemies.create(randomX,randomY,'enemy');
     enemy.anchor.setTo(0.5,0.5);
@@ -146,6 +158,9 @@ Game.Level1 = function(game){};
 
 var lives = 3;
 
+var listY = [];
+var listX = [];
+
 var cursors;
 var player;
 var enemies;
@@ -155,6 +170,7 @@ var albert;
 
 var anim;
 
+var direction = [];
 var maxEnemies = 9;
 
 var enemyBullet;
@@ -261,6 +277,29 @@ Game.Level1.prototype = {
   },
 
   update: function() {
+    enemies.position.x -= 1;
+    rocks.position.x -= 1;
+
+    for(let i =0; i< maxEnemies;i++){
+      var r = game.rnd.integerInRange(0,1);
+      if(r ==0){
+        direction[i] = false;
+      }
+      else {
+        direction[i] = true;
+      }
+
+      enemyMovement(i);
+
+      if(direction[i] == true){                 //true = down false = up
+        enemies.children[i].body.y += 1;
+        rocks.children[i].body.y += 1;
+      }
+      if(direction[i] == false){
+        enemies.children[i].body.y -= 1;
+        rocks.children[i].body.y -= 1;
+      }
+    }
 
     if (lives == 0)
     {
