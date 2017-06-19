@@ -148,10 +148,12 @@ createEnemies = function (maxEnemies){
           //enemies.children[j].kill();
           //rocks.children[j].kill();
           var loading = game.add.image(0, 0, 'loading');
+          game.world.setBounds(0, 0, 1000*2, 600);
         }
       }
     }
   }
+  game.world.setBounds(0, 0, 1000, 600);
 }
 
 Game.Level1 = function(game){};
@@ -190,7 +192,6 @@ var bullets3;
 Game.Level1.prototype = {
   create:function(){
 
-    game.world.setBounds(0, 0, 1000*2, 600);
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
