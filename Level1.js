@@ -1,9 +1,9 @@
 //enemyMovement
 enemyMovement = function (i){
-  if(enemies.children[i].body.y > listY[i]+100){
+  if(enemies.children[i].body.y > listY[i]+50){
     direction[i] = false;
   }
-  if(enemies.children[i].body.y < listY[i]-100){
+  if(enemies.children[i].body.y < listY[i]-50){
     direction[i] = true;
   }
 }
@@ -192,7 +192,16 @@ var bullets3;
 Game.Level1.prototype = {
   create:function(){
 
-    
+    for(let i =0; i< maxEnemies; i++){
+      var r = game.rnd.integerInRange(0,1);
+      if(r ==0){
+        direction[i] = false;
+      }
+      else {
+        direction[i] = true;
+      }
+    }
+
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -283,12 +292,14 @@ Game.Level1.prototype = {
     rocks.position.x -= 1;
 
     for(let i =0; i< maxEnemies;i++){
-      var r = game.rnd.integerInRange(0,1);
-      if(r ==0){
-        direction[i] = false;
+
+      if(direction[i] == true){
+        enemies.children[i].body.y += 0.5;
+        rocks.children[i].body.y += 0.5;
       }
-      else {
-        direction[i] = true;
+      if(direction[i] == false){
+        enemies.children[i].body.y -= 0.5;
+        rocks.children[i].body.y -= 0.5;
       }
 
       enemyMovement(i);
