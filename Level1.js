@@ -1,9 +1,14 @@
 //enemyMovement
 enemyMovement = function (i){
-  if(enemies.children[i].body.y > listY[i]+50){
+  if(rocks.children[i].body.x < -10){
+    enemies.children[i].body.x = 880;
+    rocks.children[i].body.x = 900;
+    //enemies.children[i].create()
+  }
+  if(rocks.children[i].body.y > listY[i]+50){
     direction[i] = false;
   }
-  if(enemies.children[i].body.y < listY[i]-50){
+  if(rocks.children[i].body.y < listY[i]-50){
     direction[i] = true;
   }
 }
