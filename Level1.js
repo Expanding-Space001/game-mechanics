@@ -153,7 +153,7 @@ createEnemies = function (maxEnemies){
       }
     }
   }
-  game.world.setBounds(0, 0, 1000, 600);
+  game.world.setBounds(0, 0, 1000*2, 600);
 }
 
 Game.Level1 = function(game){};
@@ -192,6 +192,7 @@ var bullets3;
 Game.Level1.prototype = {
   create:function(){
 
+    
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
