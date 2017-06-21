@@ -116,58 +116,23 @@ savedAlbert = function (){
 }
 
 //put alien positions here
-createEnemies = function (maxEnemies){
+createEnemies = function (){
   //random position for aliens
-  for(let i = 0;i<maxEnemies;i++){
-    var randomX = game.rnd.integerInRange(450,1350);
-    var randomY = game.rnd.integerInRange(100,500);
+  var randomY = game.rnd.integerInRange(100,500);
 
-    listX[i] = randomX;
-    listY[i] = randomY;
-
-    var enemy = enemies.create(randomX,randomY,'enemy');
-    enemy.anchor.setTo(0.5,0.5);
-    var rock = rocks.create(randomX-200,randomY-150,'rock2');
-    rock.body.setSize(5,50,195,120);
-    rock.body.immovable = true;
-    rock.body.bounce.setTo(0.5,0.5);
-  }
-
-
-  player = game.add.sprite(100,300,'shoot',0);
-  albert = game.add.sprite(900,300,'albert');
-
-
-  //check if the rocks are too close together
-  for(let i =0;i<maxEnemies-1;i++){
-    for(let j = i+1;j<maxEnemies;j++){
-      //if the other enemy is withing the x +- 100 of the first
-      if((enemies.children[i].body.x+100 > enemies.children[j].body.x && enemies.children[i].body.x-100 < enemies.children[j].body.x) ||
-      (enemies.children[i].body.x+100 > player.position.x && enemies.children[i].body.x-100 < player.position.x)){
-        //if the other enemy is withing the y +- 100 of the first
-        if((enemies.children[i].body.y+100 > enemies.children[j].body.y && enemies.children[i].body.y-100 < enemies.children[j].body.y) ||
-        (enemies.children[j].body.x+100 > player.position.x && enemies.children[j].body.x-100 < player.position.x)){
-          //if the enemy is too close
-
-          game.state.start('Level1');
-          lives = 3;
-          //enemies.children[j].kill();
-          //rocks.children[j].kill();
-          var loading = game.add.image(0, 0, 'loading');
-          game.world.setBounds(0, 0, 1000*2, 600);
-        }
-      }
-    }
-  }
-  game.world.setBounds(0, 0, 1000*2, 600);
+  var enemy = enemies.create(player.body.position.x + 900,randomY,'enemy');
+  enemy.anchor.setTo(0.5,0.5);
+  var rock = rocks.create(player.body.position.x + 700,randomY-150,'rock2');
+  rock.body.setSize(5,50,195,120);
+  rock.body.immovable = true;
+  rock.body.bounce.setTo(0.5,0.5);
 }
 
 Game.Level1 = function(game){};
 
 var lives = 3;
 
-var listY = [];
-var listX = [];
+var spawnTimer = 300;
 
 var cursors;
 var player;
@@ -179,7 +144,6 @@ var albert;
 var anim;
 
 var direction = [];
-var maxEnemies = 9;
 
 var enemyBullet;
 var firingTimer = 0;
@@ -197,8 +161,9 @@ var bullets3;
 
 Game.Level1.prototype = {
   create:function(){
+    game.world.setBounds(0, 0, 1000*2, 600);
 
-    for(let i =0; i< maxEnemies; i++){
+    /*for(let i =0; i< maxEnemies; i++){
       var r = game.rnd.integerInRange(0,1);
       if(r ==0){
         direction[i] = false;
@@ -206,11 +171,18 @@ Game.Level1.prototype = {
       else {
         direction[i] = true;
       }
-    }
+    }*/
 
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    //player
+    player = game.add.sprite(100,300,'shoot',0);
+    game.physics.enable(player,Phaser.Physics.ARCADE);
+    player.anchor.set(0.5);
+    anim = player.animations.add('fire');
+    player.body.bounce.set(0.5);
 
     //enemies
     rocks = game.add.group();
@@ -220,7 +192,7 @@ Game.Level1.prototype = {
     enemies = game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
-    createEnemies(maxEnemies);
+    createEnemies();
 
     //enemybullets
     enemyBullets = game.add.group();
@@ -229,7 +201,7 @@ Game.Level1.prototype = {
     enemyBullets.createMultiple(30,'enemyBullet');
     enemyBullets.setAll('anchor.x',0.5);
     enemyBullets.setAll('anchor.y',1);
-    enemyBullets.setAll('outOfBoundsKill',true);
+    //enemyBullets.setAll('outOfBoundsKill',true);
     enemyBullets.setAll('checkWorldBounds',true);
     game.physics.arcade.enable(enemyBullets);
 
@@ -266,13 +238,8 @@ Game.Level1.prototype = {
     bullets3.setAll('anchor.y',0.5);
     bullets3.outOfBoundsKill = true;
 
-    //player
-    game.physics.enable(player,Phaser.Physics.ARCADE);
-    player.anchor.set(0.5);
-    anim = player.animations.add('fire');
-    player.body.bounce.set(0.5);
-
     //goal
+    albert = game.add.sprite(1900,300,'albert');
     game.physics.enable(albert,Phaser.Physics.ARCADE);
     albert.anchor.set(0.5);
     albert.body.immovable = true;
@@ -295,10 +262,27 @@ Game.Level1.prototype = {
   },
 
   update: function() {
-    enemies.position.x -= 1;
-    rocks.position.x -= 1;
+    for(let i =0; i< enemies.children.length; i++){
+      enemies.children[i].position.x -= 1;
+      rocks.children[i].position.x -= 1;
+    }
 
-    for(let i =0; i< maxEnemies;i++){
+    if(spawnTimer <= 0){
+      console.log("hello");
+      createEnemies();
+      if(player.body.position.x < 300){
+        spawnTimer = 300;
+      }
+      else if(player.body.position.x < 600){
+        spawnTimer = 200;
+      }
+      else {
+        spawnTimer = 100;
+      }
+    }
+    spawnTimer -= 1;
+
+    /*for(let i =0; i< maxEnemies;i++){
 
       if(direction[i] == true){
         enemies.children[i].body.y += 0.5;
@@ -319,7 +303,7 @@ Game.Level1.prototype = {
         enemies.children[i].body.y -= 1;
         rocks.children[i].body.y -= 1;
       }
-    }
+    }*/
 
     if (lives == 0)
     {
@@ -391,5 +375,4 @@ Game.Level1.prototype = {
       game.physics.arcade.collide(enemyBullets, player, enemyHitsPlayer, null, this);
     }
   }
-
 }
