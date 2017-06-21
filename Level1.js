@@ -132,7 +132,7 @@ Game.Level1 = function(game){};
 
 var lives = 3;
 
-var spawnTimer = 300;
+var spawnTimer = 200;
 
 var cursors;
 var player;
@@ -271,13 +271,13 @@ Game.Level1.prototype = {
       console.log("hello");
       createEnemies();
       if(player.body.position.x < 300){
-        spawnTimer = 300;
-      }
-      else if(player.body.position.x < 600){
         spawnTimer = 200;
       }
-      else {
+      else if(player.body.position.x < 600){
         spawnTimer = 100;
+      }
+      else {
+        spawnTimer = 50;
       }
     }
     spawnTimer -= 1;
