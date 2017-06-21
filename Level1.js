@@ -1,9 +1,5 @@
 //enemyMovement
 enemyMovement = function (i){
-  if(rocks.children[i].body.x < -10){
-    enemies.children[i].body.x = 1180;
-    rocks.children[i].body.x = 1200;
-    //enemies.children[i].create()
   }
   if(rocks.children[i].body.y > listY[i]+50){
     direction[i] = false;
@@ -282,26 +278,28 @@ Game.Level1.prototype = {
     }
     spawnTimer -= 1;
 
-    /*for(let i =0; i< maxEnemies;i++){
+    /*for(let i =0; i< enemies.children.length;i++){
+      enemies.children[i].body.drag.set(100);
+      rocks.children[i].body.drag.set(100);
 
       if(direction[i] == true){
-        enemies.children[i].body.y += 0.5;
-        rocks.children[i].body.y += 0.5;
+        enemies.children[i].body.velocity.y += 0.5;
+        rocks.children[i].body.velocity.y += 0.5;
       }
       if(direction[i] == false){
-        enemies.children[i].body.y -= 0.5;
-        rocks.children[i].body.y -= 0.5;
+        enemies.children[i].body.velocity.y -= 0.5;
+        rocks.children[i].body.velocity.y -= 0.5;
       }
 
       enemyMovement(i);
 
       if(direction[i] == true){                 //true = down false = up
-        enemies.children[i].body.y += 1;
-        rocks.children[i].body.y += 1;
+        enemies.children[i].body.velocity.y += 1;
+        rocks.children[i].body.velocity.y += 1;
       }
       if(direction[i] == false){
-        enemies.children[i].body.y -= 1;
-        rocks.children[i].body.y -= 1;
+        enemies.children[i].body.velocity.y -= 1;
+        rocks.children[i].body..velocity.y -= 1;
       }
     }*/
 
