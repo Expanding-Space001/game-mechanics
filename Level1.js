@@ -1,8 +1,8 @@
 //enemyMovement
 enemyMovement = function (i){
   if(rocks.children[i].body.x < -10){
-    enemies.children[i].body.x = 880;
-    rocks.children[i].body.x = 900;
+    enemies.children[i].body.x = 1180;
+    rocks.children[i].body.x = 1200;
     //enemies.children[i].create()
   }
   if(rocks.children[i].body.y > listY[i]+50){
@@ -130,6 +130,7 @@ createEnemies = function (maxEnemies){
     var rock = rocks.create(randomX-200,randomY-150,'rock2');
     rock.body.setSize(5,50,195,120);
     rock.body.immovable = true;
+    rock.body.bounce.setTo(0.5,0.5);
   }
 
 
@@ -269,6 +270,7 @@ Game.Level1.prototype = {
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
     anim = player.animations.add('fire');
+    player.body.bounce.set(0.5);
 
     //goal
     game.physics.enable(albert,Phaser.Physics.ARCADE);
@@ -349,7 +351,7 @@ Game.Level1.prototype = {
         player.body.velocity.x += 5;
       }
 
-      hitRock = game.physics.arcade.collide(rocks, player);
+      hitRock = game.physics.arcade.collide(player, rocks);
 
       //shoot
       if(game.input.activePointer.leftButton.isDown){
