@@ -27,6 +27,8 @@ Game.Preloader.prototype = {
       game.load.image('laika_die','Images/Sprites/laikaDead.png');
       game.load.image('laikaAttack','Images/Sprites/laikaAttack.png');
       game.load.image('LaikaHit','Images/Sprites/Laika_hit.png');
+      game.load.image('laikaLives','Images/Sprites/LaikaLives.png');
+      game.load.image('LifesUI','Images/Sprites/lifesUI.png');
 
       //game.load.spritesheet('LaikaBark','Images/Sprites/LaikaBark.png',550,500,20);
 

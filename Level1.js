@@ -153,7 +153,6 @@ createEnemies = function (maxEnemies){
       }
     }
   }
-  game.world.setBounds(0, 0, 1000*2, 600);
 }
 
 Game.Level1 = function(game){};
@@ -191,11 +190,30 @@ var bullets3;
 
 Game.Level1.prototype = {
   create:function(){
-
-    
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
+
+    var LifesHolder = game.add.image(826,5,'LifesUI');
+    LifesHolder.scale.setTo(0.16,0.16);
+    LifesHolder.fixedToCamera = true;
+
+    var lifesImage0 = game.add.image(game.world.width - 1140, 60, 'laikaLives');
+    lifesImage0.scale.setTo(0.7,0.7);
+    lifesImage0.anchor.setTo(0.5, 0.5);
+    lifesImage0.fixedToCamera = true;
+
+    var lifesImage1 = game.add.image(game.world.width - 1100, 60, 'laikaLives');
+    lifesImage1.scale.setTo(0.7,0.7);
+    lifesImage1.anchor.setTo(0.5, 0.5);
+    lifesImage1.fixedToCamera = true;
+
+    var lifesImage2 = game.add.image(game.world.width - 1060, 60, 'laikaLives');
+    lifesImage2.scale.setTo(0.7,0.7);
+    lifesImage2.anchor.setTo(0.5, 0.5);
+    lifesImage2.fixedToCamera = true;
+
 
     //enemies
     rocks = game.add.group();
@@ -279,6 +297,15 @@ Game.Level1.prototype = {
   },
 
   update: function() {
+
+    if(lives == 2){
+      lifesImage2.kill();
+    }
+
+    if(lives == 1){
+      lifesImage1.kill();
+    }
+
     enemies.position.x -= 1;
     rocks.position.x -= 1;
 
@@ -372,6 +399,7 @@ Game.Level1.prototype = {
       game.physics.arcade.collide(bullets3, enemies, collisionHandler, null, this);
       game.physics.arcade.collide(enemyBullets, player, enemyHitsPlayer, null, this);
     }
+
   }
 
 }
