@@ -14,8 +14,8 @@ enemyFires = function (){              //when the enemy fires
     var shooter = livingEnemies[random];  //makes a random enemy the shooter
     enemyBullet.reset(shooter.body.x,shooter.body.y); //places the bullet at the shooter
 
-    game.physics.arcade.moveToObject(enemyBullet,player,120); //shoots towards the player
-    firingTimer = game.time.now+2000; //resets timer to 1 sec
+    game.physics.arcade.moveToObject(enemyBullet,player,240); //shoots towards the player
+    firingTimer = game.time.now+enemyFireCooldown; //resets timer to the cooldown variable
   }
 }
 
@@ -116,8 +116,15 @@ createEnemies = function (){
 Game.Level1 = function(game){};
 
 var lives = 3;
-
 var spawnTimer = 0;
+
+var spawnBoundary1 = 300;     //point where spawnTimer1 changes to spawnTimer2
+var spawnBoundary2 = 600;     //point where spawnTimer2 changes to spawnTimer3
+var spawnTimer1 = 200;  //how fast the enemy's spawn before player hits x = spawnBoundary1
+var spawnTimer2 = 100;  //1 sec respawn timer before player x = spawnBoundary2
+var spawnTimer3 = 50;   //0.5 sec respawn timer after spawnBoundary
+
+var playerSpeed = 10;   //how fast the player moves
 
 var cursors;
 var player;
@@ -128,7 +135,8 @@ var albert;
 
 var anim;
 
-var maxEnemies = 9;
+var enemyFireCooldown = 1500;  //0.75 sec
+var bulletSpeed = 240;         // how fast the lasers go
 
 var enemyBullet;
 var firingTimer = 0;
@@ -136,7 +144,7 @@ var livingEnemies = [];
 
 var bullet1;
 var bullets1;
-var bulletTime = 1000;
+var bulletTime = 1000;        //how long the cooldown of the bullets are
 
 var bullet2;
 var bullets2;
@@ -238,7 +246,7 @@ Game.Level1.prototype = {
 
     //player physics
     player.body.maxVelocity.set(100);
-    //player.body.collideWorldBounds = true;
+    player.body.collideWorldBounds = true;
 
     //input
     cursors = game.input.keyboard.createCursorKeys();
@@ -271,14 +279,14 @@ Game.Level1.prototype = {
     if(spawnTimer <= 0){
       console.log("hello");
       createEnemies();
-      if(player.body.position.x < 300){
-        spawnTimer = 200;
+      if(player.body.position.x < spawnBoundary1){
+        spawnTimer = spawnTimer1;
       }
-      else if(player.body.position.x < 600){
-        spawnTimer = 100;
+      else if(player.body.position.x < spawnBoundary2){
+        spawnTimer = spawnTimer2;
       }
       else{
-        spawnTimer = 50;
+        spawnTimer = spawnTimer3;
       }
     }
     spawnTimer -= 1;
@@ -317,21 +325,21 @@ Game.Level1.prototype = {
 
       if(game.input.keyboard.isDown(Phaser.Keyboard.W)){
 
-        player.body.velocity.y -= 5;
+        player.body.velocity.y -= playerSpeed;
       }
       else if(game.input.keyboard.isDown(Phaser.Keyboard.S)){
-        player.body.velocity.y += 5;
+        player.body.velocity.y += playerSpeed;
       }
 
 
       if (game.input.keyboard.isDown(Phaser.Keyboard.A))
       {
 
-        player.body.velocity.x -= 5;
+        player.body.velocity.x -= playerSpeed;
       }
       else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
       {
-        player.body.velocity.x += 5;
+        player.body.velocity.x += playerSpeed;
       }
 
       hitRock = game.physics.arcade.collide(rocks, player);
