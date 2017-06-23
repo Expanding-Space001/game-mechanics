@@ -111,6 +111,7 @@ createEnemies = function (){
     var rock = rocks.create(player.body.position.x+700,randomY-150,'rock2');
     rock.body.setSize(5,50,195,120);
     rock.body.immovable = true;
+    game.world.setBounds(0, 0, 1000*2, 600);
 }
 
 Game.Level1 = function(game){};
@@ -152,32 +153,33 @@ var bullets2;
 var bullet3;
 var bullets3;
 
+var LifesImage1;
+var LifesImage2;
+
 Game.Level1.prototype = {
   create:function(){
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-
     var LifesHolder = game.add.image(826,5,'LifesUI');
     LifesHolder.scale.setTo(0.16,0.16);
     LifesHolder.fixedToCamera = true;
 
-    var lifesImage0 = game.add.image(game.world.width - 1140, 60, 'laikaLives');
-    lifesImage0.scale.setTo(0.7,0.7);
-    lifesImage0.anchor.setTo(0.5, 0.5);
-    lifesImage0.fixedToCamera = true;
+    var LifesImage0 = game.add.image(860, 60, 'laikaLives');
+    LifesImage0.scale.setTo(0.7,0.7);
+    LifesImage0.anchor.setTo(0.5, 0.5);
+    LifesImage0.fixedToCamera = true;
 
-    var lifesImage1 = game.add.image(game.world.width - 1100, 60, 'laikaLives');
-    lifesImage1.scale.setTo(0.7,0.7);
-    lifesImage1.anchor.setTo(0.5, 0.5);
-    lifesImage1.fixedToCamera = true;
+    var LifesImage1 = game.add.image(900,60, 'laikaLives');
+    LifesImage1.scale.setTo(0.7,0.7);
+    LifesImage1.anchor.setTo(0.5, 0.5);
+    LifesImage1.fixedToCamera = true;
 
-    var lifesImage2 = game.add.image(game.world.width - 1060, 60, 'laikaLives');
-    lifesImage2.scale.setTo(0.7,0.7);
-    lifesImage2.anchor.setTo(0.5, 0.5);
-    lifesImage2.fixedToCamera = true;
-
+    var LifesImage2 = game.add.image(940,60, 'laikaLives');
+    LifesImage2.scale.setTo(0.7,0.7);
+    LifesImage2.anchor.setTo(0.5, 0.5);
+    LifesImage2.fixedToCamera = true;
 
     //enemies
     rocks = game.add.group();
@@ -264,11 +266,11 @@ Game.Level1.prototype = {
   update: function() {
 
     if(lives == 2){
-      lifesImage2.kill();
+      LifesImage2.kill();
     }
 
     if(lives == 1){
-      lifesImage1.kill();
+      LifesImage1.kill();
     }
 
     for(let i =0; i< enemies.children.length; i++){
@@ -277,7 +279,6 @@ Game.Level1.prototype = {
     }
 
     if(spawnTimer <= 0){
-      console.log("hello");
       createEnemies();
       if(player.body.position.x < spawnBoundary1){
         spawnTimer = spawnTimer1;
@@ -316,6 +317,7 @@ Game.Level1.prototype = {
     {
       player.loadTexture('laika_die');
       setTimeout(function(){game.state.start('gameOver');}, 1000);
+      game.world.setBounds(0, 0, 1000, 600);
     }
 
     player.body.drag.set(100);
