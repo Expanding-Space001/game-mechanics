@@ -117,7 +117,7 @@ Game.Level1 = function(game){};
 
 var lives = 3;
 
-var spawnTimer = 200;
+var spawnTimer = 0;
 
 var cursors;
 var player;
@@ -238,7 +238,7 @@ Game.Level1.prototype = {
 
     //player physics
     player.body.maxVelocity.set(100);
-    player.body.collideWorldBounds = true;
+    //player.body.collideWorldBounds = true;
 
     //input
     cursors = game.input.keyboard.createCursorKeys();
@@ -358,8 +358,8 @@ Game.Level1.prototype = {
 
       //if the player hits the rock
       if(hitRock){
-        //player.body.acceleration.set(0,0);
-        player.body.velocity.y = 0;
+        player.body.acceleration.set(0,0);
+        //player.body.velocity.y = 0;
         player.body.velocity.x = 0;
         //player.body.angularVelocity = 0;
       }
