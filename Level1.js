@@ -135,7 +135,7 @@ var albert;
 
 var anim;
 
-var enemyFireCooldown = 1500;  //0.75 sec
+var enemyFireCooldown = 1000;  //0.5 sec
 var bulletSpeed = 240;         // how fast the lasers go
 
 var enemyBullet;
@@ -257,7 +257,7 @@ Game.Level1.prototype = {
     game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     //camera
-    game.camera.width=600;
+    game.camera.width=500;
     game.camera.follow(player);
   },
 
