@@ -166,17 +166,17 @@ Game.Level1.prototype = {
     LifesHolder.scale.setTo(0.16,0.16);
     LifesHolder.fixedToCamera = true;
 
-    var LifesImage0 = game.add.image(860, 60, 'laikaLives');
+    LifesImage0 = game.add.image(860, 60, 'laikaLives');
     LifesImage0.scale.setTo(0.7,0.7);
     LifesImage0.anchor.setTo(0.5, 0.5);
     LifesImage0.fixedToCamera = true;
 
-    var LifesImage1 = game.add.image(900,60, 'laikaLives');
+    LifesImage1 = game.add.image(900,60, 'laikaLives');
     LifesImage1.scale.setTo(0.7,0.7);
     LifesImage1.anchor.setTo(0.5, 0.5);
     LifesImage1.fixedToCamera = true;
 
-    var LifesImage2 = game.add.image(940,60, 'laikaLives');
+    LifesImage2 = game.add.image(940,60, 'laikaLives');
     LifesImage2.scale.setTo(0.7,0.7);
     LifesImage2.anchor.setTo(0.5, 0.5);
     LifesImage2.fixedToCamera = true;
@@ -261,6 +261,8 @@ Game.Level1.prototype = {
     //camera
     game.camera.width=500;
     game.camera.follow(player);
+
+
   },
 
   update: function() {
@@ -271,6 +273,10 @@ Game.Level1.prototype = {
 
     if(lives == 1){
       LifesImage1.kill();
+    }
+
+    if(lives == 0){
+      LifesImage0.kill();
     }
 
     for(let i =0; i< enemies.children.length; i++){
