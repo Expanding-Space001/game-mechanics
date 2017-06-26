@@ -158,6 +158,8 @@ var LifesImage2;
 
 Game.Level1.prototype = {
   create:function(){
+
+    lives = 3;
     //Add a background
     var Background = game.add.image(0, 0, 'background');
     game.physics.startSystem(Phaser.Physics.ARCADE);
