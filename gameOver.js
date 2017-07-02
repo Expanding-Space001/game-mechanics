@@ -15,6 +15,7 @@ Game.gameOver.prototype = {
   },
 
   update:function(game){
+      game.world.setBounds(0, 0, 1000, 600);
 
   },
 

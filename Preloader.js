@@ -14,14 +14,21 @@ Game.Preloader.prototype = {
       game.load.image('Terug','Images/Menu/terug.png');
       game.load.image('TerugNaarMenu','Images/Menu/TerugNaarMenu.png');
 
-      game.load.spritesheet('shoot','Images/Sprites/goodfire.png',100,50,20);
+      game.load.spritesheet('anim','Images/Sprites/animation_sheet.png',300,240,16);
 
       this.load.image('background','Background/bg.png');
+      this.load.image('background2','Background/bg2.png');
+      this.load.image('Aarde','Background/Aarde.png');
+      this.load.image('Jupiter','Background/Jupiter.png');
+      this.load.image('Mars','Background/Mars.png');
+      this.load.image('Neptunus','Background/Neptunus.png');
+      this.load.image('Saturnus','Background/Saturnus.png');
+      this.load.image('Uranus','Background/Uranus.png');
 
       game.load.image('bullet', 'Images/Sprites/Bark.png');
       game.load.image('enemyBullet', 'Images/Sprites/Laser.png');
-      game.load.image('enemy','Images/Sprites/Alien.png');
-      game.load.image('rock2','Images/Sprites/rock2.png');
+      game.load.image('enemy','Images/Sprites/Alien2.png');
+      game.load.image('rock2','Images/Sprites/rock1.png');
       game.load.image('laika_idle','Images/Sprites/laika_idle.png');
       game.load.image('albert', 'Images/Sprites/albert.png');
       game.load.image('laika_die','Images/Sprites/laikaDead.png');
@@ -30,7 +37,6 @@ Game.Preloader.prototype = {
       game.load.image('laikaLives','Images/Sprites/LaikaLives.png');
       game.load.image('LifesUI','Images/Sprites/lifesUI.png');
 
-      //game.load.spritesheet('LaikaBark','Images/Sprites/LaikaBark.png',550,500,20);
 
   },
 

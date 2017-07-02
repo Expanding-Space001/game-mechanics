@@ -27,7 +27,7 @@ enemyHitsPlayer = function (player,bullet){        //when the bullet hits the pl
 }
 
 changeToIdle = function(){
-  player.loadTexture('laika_idle');
+  player.loadTexture('anim');
 }
 
 //collision
@@ -108,7 +108,9 @@ createEnemies = function (){
 
     var enemy = enemies.create(player.body.position.x+900,randomY,'enemy');
     enemy.anchor.setTo(0.5,0.5);
-    var rock = rocks.create(player.body.position.x+700,randomY-150,'rock2');
+    enemy.scale.setTo(0.6,0.6);
+    var rock = rocks.create(player.body.position.x+850,randomY+10,'rock2');
+    rock.scale.setTo(0.25,0.25);
     rock.body.setSize(5,50,195,120);
     rock.body.immovable = true;
     game.world.setBounds(0, 0, 1000*2, 600);
@@ -145,7 +147,7 @@ var livingEnemies = [];
 
 var bullet1;
 var bullets1;
-var bulletTime = 1000;        //how long the cooldown of the bullets are
+var bulletTime = 1500;        //how long the cooldown of the bullets are
 
 var bullet2;
 var bullets2;
@@ -153,18 +155,37 @@ var bullets2;
 var bullet3;
 var bullets3;
 
+var LifesImage0;
 var LifesImage1;
 var LifesImage2;
+var LifesHolder;
+
+var Background;
+var Background2;
+var Aarde ;
+var Juptier;
+var Mars;
+var Neptunus;
+var Saturnus;
+var Uranus;
 
 Game.Level1.prototype = {
   create:function(){
 
     lives = 3;
-    //Add a background
-    var Background = game.add.image(0, 0, 'background');
-    game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    var LifesHolder = game.add.image(826,5,'LifesUI');
+    //Add a background
+     Background = game.add.image(0, 0, 'background');
+    //game.physics.startSystem(Phaser.Physics.ARCADE);
+     Background2 = game.add.image(0, 0, 'background2');
+     Aarde = game.add.image(0, 0, 'Aarde');
+     Juptier = game.add.image(600, 60, 'Jupiter');
+     Mars = game.add.image(700, 350, 'Mars');
+     Neptunus = game.add.image(1200, 200, 'Neptunus');
+     Saturnus = game.add.image(1500, 0, 'Saturnus');
+     Uranus = game.add.image(1800, 300, 'Uranus');
+
+    LifesHolder = game.add.image(826,5,'LifesUI');
     LifesHolder.scale.setTo(0.16,0.16);
     LifesHolder.fixedToCamera = true;
 
@@ -191,17 +212,6 @@ Game.Level1.prototype = {
     enemies = game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
-
-    //enemybullets
-    enemyBullets = game.add.group();
-    enemyBullets.enablebody = true;
-    enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
-    enemyBullets.createMultiple(30,'enemyBullet');
-    enemyBullets.setAll('anchor.x',0.5);
-    enemyBullets.setAll('anchor.y',1);
-    //enemyBullets.setAll('outOfBoundsKill',true);
-    enemyBullets.setAll('checkWorldBounds',true);
-    game.physics.arcade.enable(enemyBullets);
 
     //bullet1
     bullets1 = game.add.group();
@@ -237,10 +247,11 @@ Game.Level1.prototype = {
     bullets3.outOfBoundsKill = true;
 
     //player
-    player = game.add.sprite(100,300,'shoot',0);
+    player = game.add.sprite(100,300,'anim',0);
+    player.scale.setTo(0.3,0.3);
     game.physics.enable(player,Phaser.Physics.ARCADE);
     player.anchor.set(0.5);
-    anim = player.animations.add('fire');
+    anim = player.animations.add("fire", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17], 24, false);
 
     //goal
     albert = game.add.sprite(1900,300,'albert');
@@ -252,6 +263,18 @@ Game.Level1.prototype = {
     player.body.maxVelocity.set(100);
     player.body.collideWorldBounds = true;
 
+    //enemybullets
+    enemyBullets = game.add.group();
+
+    enemyBullets.enablebody = true;
+    enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    enemyBullets.createMultiple(30,'enemyBullet');
+    enemyBullets.setAll('anchor.x',0.5);
+    enemyBullets.setAll('anchor.y',1);
+    //enemyBullets.setAll('outOfBoundsKill',true);
+    enemyBullets.setAll('checkWorldBounds',true);
+    game.physics.arcade.enable(enemyBullets);
+
     //input
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
@@ -261,13 +284,19 @@ Game.Level1.prototype = {
     game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     //camera
-    game.camera.width=500;
+    //game.camera.width=500;
     game.camera.follow(player);
-
-
   },
 
   update: function() {
+
+    Background2.x = game.camera.x * 0.1;
+    Aarde.x = game.camera.x * 0.3;
+    Juptier.x = game.camera.x * 0.3 + 600;
+    Mars.x = game.camera.x * 0.4 + 700;
+    Neptunus.x = game.camera.x * 0.3 + 1200;
+    Saturnus.x = game.camera.x * 0.3 + 1500;
+    Uranus.x  = game.camera.x * 0.4 + 1800;
 
     if(lives == 2){
       LifesImage2.kill();
@@ -279,6 +308,11 @@ Game.Level1.prototype = {
 
     if(lives == 0){
       LifesImage0.kill();
+      player.loadTexture('laika_die');
+      player.scale.setTo(1,1);
+      setTimeout(function(){game.state.start('gameOver');}, 1000);
+    }else{
+      player.scale.setTo(0.3,0.3);
     }
 
     for(let i =0; i< enemies.children.length; i++){
@@ -321,12 +355,7 @@ Game.Level1.prototype = {
       }
     }*/
 
-    if (lives == 0)
-    {
-      player.loadTexture('laika_die');
-      setTimeout(function(){game.state.start('gameOver');}, 1000);
-      game.world.setBounds(0, 0, 1000, 600);
-    }
+
 
     player.body.drag.set(100);
 
@@ -357,14 +386,14 @@ Game.Level1.prototype = {
       //shoot
       if(game.input.activePointer.leftButton.isDown){
         if(game.time.now > bulletTime){
-          anim.play(20);
+          player.animations.play("fire");
           setTimeout(function(){
             fireBullet1();
             fireBullet2();
-            fireBullet3();},400);
-          bulletTime = game.time.now + 1000;
-          anim.onComplete.add(function finished(){
-            player.loadTexture('shoot',0);
+            fireBullet3();},400)
+            bulletTime = game.time.now + 1000;
+            anim.onComplete.add(function finished(){
+              player.loadTexture("anim",0);
           },this);
         }
       }

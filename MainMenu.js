@@ -12,6 +12,9 @@ Game.MainMenu.prototype = {
       this.createButton(game,game.world.centerX - 100, game.world.centerY,300,100,
       function(){
         this.state.start('Level1');
+        game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+        //game.scale.startFullScreen(false);
+
       });
 
       this.createButton2(game,game.world.centerX - 100, game.world.centerY + 160,300,100,
