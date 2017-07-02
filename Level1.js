@@ -127,7 +127,7 @@ var spawnTimer1 = 200;  //how fast the enemy's spawn before player hits x = spaw
 var spawnTimer2 = 100;  //1 sec respawn timer before player x = spawnBoundary2
 var spawnTimer3 = 50;   //0.5 sec respawn timer after spawnBoundary
 
-var playerSpeed = 10;   //how fast the player moves
+var playerSpeed = 15;   //how fast the player moves
 
 var cursors;
 var player;
