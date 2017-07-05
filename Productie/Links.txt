@@ -1,0 +1,5 @@
+https://github.com/Expanding-Space001/game-mechanics
+
+trello: https://trello.com/b/bdXvahj9/expanding-space
+
+Game: http://22005.hosts.ma-cloud.nl/phaser/game-mechanics/
